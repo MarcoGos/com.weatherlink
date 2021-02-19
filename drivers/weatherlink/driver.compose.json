@@ -1,0 +1,63 @@
+{
+  "id": "weatherlink",
+  "name": {
+    "en": "WeatherLink"
+  },
+  "class": "sensor",
+  "capabilities": [
+    "measure_temperature",
+    "measure_pressure",
+    "measure_humidity",
+    "measure_rain",
+    "measure_wind_angle",
+    "measure_wind_strength"
+  ],
+  "images": {
+    "large": "/drivers/dsmr-logger/assets/images/large.png",
+    "small": "/drivers/dsmr-logger/assets/images/small.png"
+  },
+  "settings": [
+    {
+      "type": "group",
+      "label": {
+        "en": "Settings",
+        "nl": "Instellingen"
+      },
+      "children": [
+        {
+          "id": "interval",
+          "type": "number",
+          "label": {
+            "en": "Interval",
+            "nl": "Interval"
+          },
+          "value": 60,
+          "min": 5,
+          "units": {
+            "en": "seconds",
+            "nl": "seconden"
+          }
+        },
+        {
+          "id": "url",
+          "type": "text",
+          "label": {
+            "en": "Url"
+          },
+          "hint": {
+            "en": "Url of WeatherLink file",
+            "nl": "Url van WeatherLink bestand"
+          },
+          "value": "",
+          "example": "http://my.website.com/weatherlink.txt"
+        }
+      ]
+    }
+  ],
+  "pair": [
+    {
+      "id": "start"
+    }
+  ]
+}
+  

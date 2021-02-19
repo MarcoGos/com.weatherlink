@@ -1,0 +1,19 @@
+{
+  "name": "com.weatherlink",
+  "version": "1.0.0",
+  "main": "app.js",
+  "devDependencies": {
+    "homey": "^2.9.7"
+  },
+  "dependencies": {
+    "node-fetch": "^2.6.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/marcogos/com.weatherlink"
+  },
+  "bugs": {
+    "url": "https://github.com/marcogos/com.weatherlink/issues"
+  },
+  "homepage": "https://github.com/marcogos/com.weatherlink#readme"
+}

@@ -1,0 +1,90 @@
+{
+  "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
+  "id": "com.weatherlink",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "WeatherLink"
+  },
+  "description": {
+    "en": "Link with WeatherLink data file"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Marco Gosselink",
+    "email": "marco@famgosselink.nl"
+  },
+  "drivers": [
+    {
+      "id": "weatherlink",
+      "name": {
+        "en": "WeatherLink"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_pressure",
+        "measure_humidity",
+        "measure_rain",
+        "measure_wind_angle",
+        "measure_wind_strength"
+      ],
+      "images": {
+        "large": "/drivers/dsmr-logger/assets/images/large.png",
+        "small": "/drivers/dsmr-logger/assets/images/small.png"
+      },
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Settings",
+            "nl": "Instellingen"
+          },
+          "children": [
+            {
+              "id": "interval",
+              "type": "number",
+              "label": {
+                "en": "Interval",
+                "nl": "Interval"
+              },
+              "value": 10,
+              "min": 2,
+              "max": 60,
+              "units": {
+                "en": "seconds",
+                "nl": "seconden"
+              }
+            },
+            {
+              "id": "url",
+              "type": "text",
+              "label": {
+                "en": "Url"
+              },
+              "hint": {
+                "en": "Url of WeatherLink file",
+                "nl": "Url van WeatherLink bestand"
+              },
+              "value": "",
+              "example": "http://my.website.com/weatherlink.txt"
+            }
+          ]
+        }
+      ],
+      "pair": [
+        {
+          "id": "start"
+        }
+      ]
+    }
+  ]
+}

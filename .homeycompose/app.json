@@ -1,0 +1,24 @@
+{
+  "id": "com.weatherlink",
+  "version": "1.0.0",
+  "compatibility": ">=5.0.0",
+  "sdk": 3,
+  "name": {
+    "en": "WeatherLink"
+  },
+  "description": {
+    "en": "Link with WeatherLink data file"
+  },
+  "category": [
+    "climate"
+  ],
+  "permissions": [],
+  "images": {
+    "large": "/assets/images/large.png",
+    "small": "/assets/images/small.png"
+  },
+  "author": {
+    "name": "Marco Gosselink",
+    "email": "marco@famgosselink.nl"
+  }
+}

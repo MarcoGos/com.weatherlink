@@ -1,0 +1,89 @@
+<script type="text/javascript">
+    Homey.setTitle( __('pair.title') );
+    $(function() {
+        $('#connect').click(function(){
+            var inputurl = $('#url').val();
+            var deviceName = $('#GivenName').val();
+            if( inputurl != '' && deviceName != '') {
+                var device_data = {
+                    id: deviceName
+                };
+                var settings = {
+                    url: inputurl
+                };
+                Homey.createDevice({
+                    name  	 : deviceName,
+                    data 	 : device_data,
+                    settings : settings
+                }, function(error, result) {
+                    if (error) {
+                        $('.mi-device-test').hide();
+                        $('.mi-device-error').show();
+                        $('.mi-device-error-msg').html(error.message || error.toString());
+                        return Homey.alert( error );
+                    }
+                    $('.mi-device-test').hide();
+                    $('.mi-device-ok').show();
+                    Homey.done();
+                })
+            } else {
+                $('.mi-device-test').hide();
+                $('.mi-device-error').show();
+                $('.mi-device-error-msg').html( __('pair.nosettings') );
+            }
+        });
+    })
+</script>
+
+<style type="text/css">
+    .mi-device-pairing {
+        display: flex;
+        justify-content: space-between;
+        flex-wrap: wrap;
+    }
+    .mi-device-pairing .col1, .mi-device-pairing .col2 {
+        width: 48%;
+    }
+    .mi-device-status, .mi-device-info {
+        display: none;
+    }
+    .mi-device-info {
+        font-size: 12px;
+    }
+    .mi-device-info .info-row {
+        min-width: 150px;
+        padding-bottom: 4px;
+        font-weight: 700;
+    }
+    .mi-device-info .info-label {
+        display: inline-block;
+        min-width: 100px;
+        font-weight: 700;
+    }
+    .form-group input[type="text"] {
+        width: 80% !important;
+    }
+    .buttons, .messages {
+        padding-top: 14px;
+    }
+</style>
+
+<p data-i18n="pair.intro">Enter the details of device.</p>
+<div class="mi-device-pairing">
+    <div class="col1">
+        <div class="form-group">
+            <label for="url" data-i18n="pair.url">Url</label>
+            <input type="text" class="form-control" id="url" placeholder="https://my.website.com/weatherlink.txt">
+        </div>
+        <div class="form-group">
+            <label for="GivenName" data-i18n="pair.name">Device name</label>
+            <input type="text" class="form-control" id="GivenName" placeholder="WeatherLink-12391">
+        </div>
+        <div class="form-group buttons">
+            <button id="connect" class="button" data-i18n="pair.connect">Connect</button>
+        </div>
+    </div>
+    <div class="col2">
+        <div class="mi-device-info"></div>
+    </div>
+</div>

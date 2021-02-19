@@ -1,0 +1,13 @@
+{
+    "pair": {
+        "title": "Add Open-Toon Device ",
+        "name": "Choose an unique name!",
+        "intro": "Fill in your details",
+        "url": "Url",
+        "success": "Device succesfully added",
+        "nosettings": "Please fill in all fields",
+        "error": "Somethink bad happend try again... \n__error__",
+        "connect": "Connect",
+        "unknownerror": "Unknown error occurred"
+      }
+}

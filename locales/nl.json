@@ -1,0 +1,13 @@
+{
+    "pair": {
+        "title": "WeatherLink apparaat toevoegen",
+        "name": "Naam van het apparaat (moet uniek zijn!)",
+        "intro": "Vul de details van de WeatherLink in",
+        "url": "Url",
+        "success": "Apparaat succesvol toegevoegd.",
+        "nosettings": "Vul a.u.b. alle velden in.",
+        "error": "Er ging iets fout, probeer het opnieuw... \n__error__",
+        "connect": "Verbind",
+        "unknownerror": "Onbekende fout. Controleer a.u.b. je instellingen en probeer het nog eens."
+      }
+}
