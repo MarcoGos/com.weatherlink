@@ -56,9 +56,8 @@
                 "en": "Interval",
                 "nl": "Interval"
               },
-              "value": 10,
-              "min": 2,
-              "max": 60,
+              "value": 60,
+              "min": 5,
               "units": {
                 "en": "seconds",
                 "nl": "seconden"
