@@ -1,9 +1,12 @@
 {
     "pair": {
         "title": "WeatherLink apparaat toevoegen",
+        "title_apiv1": "WeatherLink v1 API apparaat toevoegen",
         "name": "Naam van het apparaat (moet uniek zijn!)",
         "intro": "Vul de details van de WeatherLink in",
-        "url": "Url",
+        "intro_apiv1": "Vul de details van de WeatherLink API v1 in",
+        "deviceid": "Apparaat ID",
+        "pass": "Wachtwoord",
         "success": "Apparaat succesvol toegevoegd.",
         "nosettings": "Vul a.u.b. alle velden in.",
         "error": "Er ging iets fout, probeer het opnieuw... \n__error__",

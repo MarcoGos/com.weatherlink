@@ -1,7 +1,7 @@
 {
-  "id": "weatherlink",
+  "id": "weatherlink.v1.api",
   "name": {
-    "en": "WeatherLink"
+    "en": "WeatherLink v1 API"
   },
   "class": "sensor",
   "capabilities": [
@@ -29,8 +29,8 @@
     }
   },
   "images": {
-    "large": "/drivers/weatherlink/assets/images/large.png",
-    "small": "/drivers/weatherlink/assets/images/small.png"
+    "large": "/drivers/weatherlink.v1.api/assets/images/large.png",
+    "small": "/drivers/weatherlink.v1.api/assets/images/small.png"
   },
   "settings": [
     {
@@ -48,24 +48,47 @@
             "nl": "Interval"
           },
           "value": 60,
-          "min": 5,
+          "min": 60,
           "units": {
             "en": "seconds",
             "nl": "seconden"
           }
         },
         {
-          "id": "url",
+          "id": "deviceid",
           "type": "text",
           "label": {
-            "en": "Url"
+            "en": "Device ID"
           },
           "hint": {
-            "en": "Url of WeatherLink file",
-            "nl": "Url van WeatherLink bestand"
+            "en": "ID of WeatherLink Device",
+            "nl": "ID van WeatherLink device"
           },
           "value": "",
-          "example": "http://my.website.com/weatherlink.txt"
+          "example": "001D0A00DE6A"
+        },
+        {
+          "id": "pass",
+          "type": "text",
+          "label": {
+            "en": "Password",
+            "nl": "Wachtwoord"
+          },
+          "value": "",
+          "example": "DEMO"
+        },
+        {
+          "id": "apitoken",
+          "type": "text",
+          "label": {
+            "en": "Api Token"
+          },
+          "hint": {
+            "en": "Generated Api Token v1",
+            "nl": "Gegenereerd Api Token v1"
+          },
+          "value": "",
+          "example": "demo0a002bc5272033001d0a002bc527"
         }
       ]
     }

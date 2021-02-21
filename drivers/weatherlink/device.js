@@ -10,12 +10,14 @@ class MyDevice extends Homey.Device {
 
         let measurements =
 			[
-				{ "device": "measure_temperature", "field": "outsideTemp" },
-                { "device": "measure_pressure", "field": "barometer" },
-                { "device": "measure_humidity", "field": "outsideHumidity" },
-	            { "device": "measure_rain", "field": "dailyRain" },
-                { "device": "measure_wind_angle", "field": "windDir" },
-                { "device": "measure_wind_strength", "field": "windSpeed" }
+				{ "capability": "measure_temperature", "field": "outsideTemp" },
+                { "capability": "measure_temperature.dewpoint", "field": "outsideDewPt"},
+                { "capability": "measure_temperature.windchill", "field": "windChill"},
+                { "capability": "measure_pressure", "field": "barometer" },
+                { "capability": "measure_humidity", "field": "outsideHumidity" },
+	            { "capability": "measure_rain", "field": "dailyRain" },
+                { "capability": "measure_wind_angle", "field": "windDir" },
+                { "capability": "measure_wind_strength", "field": "windSpeed" }
     		]
 
         fetch(device.getSetting('url')).then(function (response) {
@@ -36,9 +38,8 @@ class MyDevice extends Homey.Device {
                 });
 
                 measurements.forEach(measurement => {
-                    device._updateProperty(measurement.device, properties[measurement.field]);
+                    device._updateProperty(measurement.capability, properties[measurement.field]);
                 });
-
             });
         }).catch(function (err) {
             console.log(err)
@@ -69,6 +70,13 @@ class MyDevice extends Homey.Device {
 
         if (!this.hasCapability('measure_rain')) {
             this.addCapability('measure_rain');
+        }
+        
+        if (!this.hasCapability('measure_temperature.dewpoint')) {
+            this.addCapability('measure_temperature.dewpoint');
+        }
+        if (!this.hasCapability('measure_temperature.windchill')) {
+            this.addCapability('measure_temperature.windchill');
         }
 
         if (this.hasCapability('measure_gust_strength')) {

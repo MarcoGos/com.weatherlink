@@ -1,9 +1,12 @@
 {
     "pair": {
-        "title": "Add Open-Toon Device ",
+        "title": "Add WeatherLink Device ",
+        "title_apiv1": "Add WeatherLink v1 API Device",
         "name": "Choose an unique name!",
         "intro": "Fill in your details",
-        "url": "Url",
+        "intro_apiv1": "Fill in your details from you API v1",
+        "deviceid": "Device ID",
+        "pass": "Password",
         "success": "Device succesfully added",
         "nosettings": "Please fill in all fields",
         "error": "Somethink bad happend try again... \n__error__",

@@ -31,12 +31,28 @@
       "class": "sensor",
       "capabilities": [
         "measure_temperature",
+        "measure_temperature.dewpoint",
+        "measure_temperature.windchill",
         "measure_pressure",
         "measure_humidity",
         "measure_rain",
         "measure_wind_angle",
         "measure_wind_strength"
       ],
+      "capabilitiesOptions": {
+        "measure_temperature.dewpoint": {
+          "title": {
+            "en": "Dewpoint",
+            "nl": "Dauwpunt"
+          }
+        },
+        "measure_temperature.windchill": {
+          "title": {
+            "en": "Windchill",
+            "nl": "Gevoelstemperatuur"
+          }
+        }
+      },
       "images": {
         "large": "/drivers/dsmr-logger/assets/images/large.png",
         "small": "/drivers/dsmr-logger/assets/images/small.png"
@@ -75,6 +91,107 @@
               },
               "value": "",
               "example": "http://my.website.com/weatherlink.txt"
+            }
+          ]
+        }
+      ],
+      "pair": [
+        {
+          "id": "start"
+        }
+      ]
+    },
+    {
+      "id": "weatherlink.v1.api",
+      "name": {
+        "en": "WeatherLink v1 API"
+      },
+      "class": "sensor",
+      "capabilities": [
+        "measure_temperature",
+        "measure_temperature.dewpoint",
+        "measure_temperature.windchill",
+        "measure_pressure",
+        "measure_humidity",
+        "measure_rain",
+        "measure_wind_angle",
+        "measure_wind_strength"
+      ],
+      "capabilitiesOptions": {
+        "measure_temperature.dewpoint": {
+          "title": {
+            "en": "Dewpoint",
+            "nl": "Dauwpunt"
+          }
+        },
+        "measure_temperature.windchill": {
+          "title": {
+            "en": "Windchill",
+            "nl": "Gevoelstemperatuur"
+          }
+        }
+      },
+      "images": {
+        "large": "/drivers/weatherlink.v1.api/assets/images/large.png",
+        "small": "/drivers/weatherlink.v1.api/assets/images/small.png"
+      },
+      "settings": [
+        {
+          "type": "group",
+          "label": {
+            "en": "Settings",
+            "nl": "Instellingen"
+          },
+          "children": [
+            {
+              "id": "interval",
+              "type": "number",
+              "label": {
+                "en": "Interval",
+                "nl": "Interval"
+              },
+              "value": 60,
+              "min": 60,
+              "units": {
+                "en": "seconds",
+                "nl": "seconden"
+              }
+            },
+            {
+              "id": "deviceid",
+              "type": "text",
+              "label": {
+                "en": "Device ID"
+              },
+              "hint": {
+                "en": "ID of WeatherLink Device",
+                "nl": "ID van WeatherLink device"
+              },
+              "value": "",
+              "example": "001D0A00DE6A"
+            },
+            {
+              "id": "pass",
+              "type": "text",
+              "label": {
+                "en": "Password",
+                "nl": "Wachtwoord"
+              },
+              "value": "",
+              "example": "DEMO"
+            },
+            {
+              "id": "apitoken",
+              "type": "text",
+              "label": {
+                "en": "Api Token"
+              },
+              "hint": {
+                "en": "Generated Api Token v1",
+                "nl": "Gegenereerd Api Token v1"
+              },
+              "value": "",
+              "example": "demo0a002bc5272033001d0a002bc527"
             }
           ]
         }

@@ -1,18 +1,21 @@
 <script type="text/javascript">
-    Homey.setTitle( __('pair.title') );
+    Homey.setTitle( __('pair.title_apiv1') );
     $(function() {
         $('#connect').click(function(){
-            var inputurl = $('#url').val();
-            var deviceName = $('#GivenName').val();
-            if( inputurl != '' && deviceName != '') {
+            var deviceid = $('#deviceid').val();
+            var pass = $('#pass').val();
+            var apitoken = $('#apitoken').val();
+            if( deviceid != '' && pass != '' && apitoken != '') {
                 var device_data = {
-                    id: deviceName
+                    id: deviceid
                 };
                 var settings = {
-                    url: inputurl
+                    deviceid: deviceid,
+                    pass: pass,
+                    apitoken: apitoken
                 };
                 Homey.createDevice({
-                    name  	 : deviceName,
+                    name  	 : deviceid,
                     data 	 : device_data,
                     settings : settings
                 }, function(error, result) {
@@ -68,16 +71,20 @@
     }
 </style>
 
-<p data-i18n="pair.intro">Enter the details of device.</p>
+<p data-i18n="pair.intro_apiv1">Enter the details of device.</p>
 <div class="mi-device-pairing">
     <div class="col1">
         <div class="form-group">
-            <label for="url" data-i18n="pair.url">Url</label><br>
-            <input type="text" class="form-control" id="url" placeholder="https://my.website.com/weatherlink.txt">
+            <label for="deviceid" data-i18n="pair.deviceid">Device ID</label><br>
+            <input type="text" class="form-control" id="deviceid" placeholder="001D0A00DE6A">
         </div>
         <div class="form-group">
-            <label for="GivenName" data-i18n="pair.name">Device name</label><br>
-            <input type="text" class="form-control" id="GivenName" placeholder="WeatherLink-12391">
+            <label for="pass" data-i18n="pair.pass">Password</label><br>
+            <input type="text" class="form-control" id="pass" placeholder="DEMO">
+        </div>
+        <div class="form-group">
+            <label for="apitoken" data-i18n="pair.apitoken">API Token</label><br>
+            <input type="text" class="form-control" id="apitoken" placeholder="demo0a002bc5272033001d0a002bc527">
         </div>
         <div class="form-group buttons">
             <button id="connect" class="button" data-i18n="pair.connect">Connect</button>
