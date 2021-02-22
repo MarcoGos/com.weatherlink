@@ -1,0 +1,40 @@
+{
+    "triggers": [
+      {
+        "id": "measure_temperature.dewpoint.changed",
+        "title": {
+          "en": "Dewpoint changed",
+          "nl": "Dauwpunt is veranderd"
+        },
+        "args": [],
+        "tokens": [
+          {
+            "name": "measure_temperature.dewpoint",
+            "type": "number",
+            "title": {
+              "en": "Dewpoint",
+              "nl": "Dauwpunt"
+            }
+          }
+        ]
+      },
+      {
+        "id": "measure_temperature.windchill.changed",
+        "title": {
+          "en": "Windchill changed",
+          "nl": "Gevoelstemperatuur is veranderd"
+        },
+        "args": [],
+        "tokens": [
+          {
+            "name": "measure_temperature.windchill",
+            "type": "number",
+            "title": {
+              "en": "Windchill",
+              "nl": "Gevoelstemperatuur"
+            }
+          }
+        ]
+      }
+    ]
+}

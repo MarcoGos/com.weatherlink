@@ -11,6 +11,7 @@
         "nosettings": "Please fill in all fields",
         "error": "Somethink bad happend try again... \n__error__",
         "connect": "Connect",
-        "unknownerror": "Unknown error occurred"
+        "unknownerror": "Unknown error occurred",
+        "incorrectfileformat": "Incorrect file formatX"
       }
 }

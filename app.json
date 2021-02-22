@@ -22,6 +22,58 @@
     "name": "Marco Gosselink",
     "email": "marco@famgosselink.nl"
   },
+  "flow": {
+    "triggers": [
+      {
+        "id": "measure_temperature.dewpoint.changed",
+        "title": {
+          "en": "Dewpoint changed",
+          "nl": "Dauwpunt is veranderd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=weatherlink"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "measure_temperature.dewpoint",
+            "type": "number",
+            "title": {
+              "en": "Dewpoint",
+              "nl": "Dauwpunt"
+            }
+          }
+        ]
+      },
+      {
+        "id": "measure_temperature.windchill.changed",
+        "title": {
+          "en": "Windchill changed",
+          "nl": "Gevoelstemperatuur is veranderd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=weatherlink"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "measure_temperature.windchill",
+            "type": "number",
+            "title": {
+              "en": "Windchill",
+              "nl": "Gevoelstemperatuur"
+            }
+          }
+        ]
+      }
+    ]
+  },
   "drivers": [
     {
       "id": "weatherlink",
@@ -54,8 +106,8 @@
         }
       },
       "images": {
-        "large": "/drivers/dsmr-logger/assets/images/large.png",
-        "small": "/drivers/dsmr-logger/assets/images/small.png"
+        "large": "/drivers/weatherlink/assets/images/large.png",
+        "small": "/drivers/weatherlink/assets/images/small.png"
       },
       "settings": [
         {

@@ -3,10 +3,10 @@
 const Homey = require('homey');
 const fetch = require('node-fetch');
 
-class MyDevice extends Homey.Device {
+class WeatherLinkV1API extends Homey.Device {
 
     timerElapsed(device) {
-		setTimeout(function () { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
+		device.timerID = setTimeout(function () { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
 
         let measurements =
 			[
@@ -44,6 +44,19 @@ class MyDevice extends Homey.Device {
 			let oldValue = this.getCapabilityValue(key);
 			if (oldValue !== null && oldValue != value) {
 				this.setCapabilityValue(key, value);
+
+                if (key === 'measure_temperature.dewpoint') {
+                    let tokens = {
+						"measure_temperature.dewpoint": value || 'n/a'
+					}
+                    this.driver.triggerMeasureTemperatureDewpointChangedFlow(this, tokens);
+                }
+                if (key === 'measure_temperature.windchill') {
+                    let tokens = {
+						"measure_temperature.windchill": value || 'n/a'
+					}
+                    this.driver.triggerMeasureTemperatureWindchillChangedFlow(this, tokens);
+                }
             } else {
                 this.setCapabilityValue(key, value);
             }
@@ -64,8 +77,15 @@ class MyDevice extends Homey.Device {
         }
 
 		var device = this;
-		setTimeout(function () { device.timerElapsed(device); }, 1000);
+		device.timerID = setTimeout(function () { device.timerElapsed(device); }, 1000);
 	}
+
+    async onDeleted()
+    {
+        if (this.timerID) {
+            clearTimeout(this.timerID);
+        }
+    }
 }
 
-module.exports = MyDevice;
+module.exports = WeatherLinkV1API;

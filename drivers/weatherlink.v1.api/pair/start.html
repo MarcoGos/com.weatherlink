@@ -6,29 +6,35 @@
             var pass = $('#pass').val();
             var apitoken = $('#apitoken').val();
             if( deviceid != '' && pass != '' && apitoken != '') {
-                var device_data = {
-                    id: deviceid
-                };
-                var settings = {
-                    deviceid: deviceid,
-                    pass: pass,
-                    apitoken: apitoken
-                };
-                Homey.createDevice({
-                    name  	 : deviceid,
-                    data 	 : device_data,
-                    settings : settings
-                }, function(error, result) {
-                    if (error) {
+                const data = { "deviceid": deviceid, "pass": pass, "apitoken": apitoken }
+                Homey.emit('validate', data).then((result) => {
+                    var device_data = {
+                        id: deviceid
+                    };
+                    var settings = {
+                        deviceid: deviceid,
+                        pass: pass,
+                        apitoken: apitoken
+                    };
+                    Homey.createDevice({
+                        name  	 : deviceid,
+                        data 	 : device_data,
+                        settings : settings
+                    }, function(error, result) {
+                        if (error) {
+                            $('.mi-device-test').hide();
+                            $('.mi-device-error').show();
+                            $('.mi-device-error-msg').html(error.message || error.toString());
+                            return Homey.alert( error );
+                        }
                         $('.mi-device-test').hide();
-                        $('.mi-device-error').show();
-                        $('.mi-device-error-msg').html(error.message || error.toString());
-                        return Homey.alert( error );
-                    }
-                    $('.mi-device-test').hide();
-                    $('.mi-device-ok').show();
-                    Homey.done();
-                })
+                        $('.mi-device-ok').show();
+                        Homey.done();
+                    })
+                }).catch((err) => {
+                    Homey.alert(err);
+                    Homey.hideLoadingOverlay();
+                });
             } else {
                 $('.mi-device-test').hide();
                 $('.mi-device-error').show();
@@ -76,15 +82,15 @@
     <div class="col1">
         <div class="form-group">
             <label for="deviceid" data-i18n="pair.deviceid">Device ID</label><br>
-            <input type="text" class="form-control" id="deviceid" placeholder="001D0A00DE6A">
+            <input type="text" class="form-control" id="deviceid" value="001D0A00DE6A">
         </div>
         <div class="form-group">
             <label for="pass" data-i18n="pair.pass">Password</label><br>
-            <input type="text" class="form-control" id="pass" placeholder="DEMO">
+            <input type="text" class="form-control" id="pass" value="DEMO">
         </div>
         <div class="form-group">
             <label for="apitoken" data-i18n="pair.apitoken">API Token</label><br>
-            <input type="text" class="form-control" id="apitoken" placeholder="demo0a002bc5272033001d0a002bc527">
+            <input type="text" class="form-control" id="apitoken" value="demo0a002bc5272033001d0a002bc527">
         </div>
         <div class="form-group buttons">
             <button id="connect" class="button" data-i18n="pair.connect">Connect</button>
