@@ -22,22 +22,7 @@ class WeatherLink extends Homey.Device {
 
         fetch(device.getSetting('url')).then(function (response) {
             response.text().then(function (data) {
-                const properties = device.driver.convertRawTextToProperties(data);
-                // const lines = data.split(/\r?\n/);
-                // const properties = {}
-                // lines.forEach((line) => {
-                //     let res = line.match(/^\$([^ ]*) = " ?(.*)";$/)
-                //     if (res) {
-                //         var [,property,value] = res
-                //         if (property && value && value != '---') {
-                //             if (isNaN(value))
-                //                 properties[property] = value
-                //             else
-                //                 properties[property] = Number(value)
-                //         }
-                //     }
-                // });
-
+                const properties = device._convertRawTextToProperties(data);
                 measurements.forEach(measurement => {
                     if (properties[measurement.field]) {
                         device._updateProperty(measurement.capability, properties[measurement.field]);
@@ -72,7 +57,25 @@ class WeatherLink extends Homey.Device {
             }
         }
     }
-    
+
+    _convertRawTextToProperties(data) {
+        const lines = data.split(/\r?\n/);
+        const properties = {}
+        lines.forEach((line) => {
+            let res = line.match(/^\$([^ ]*) = " ?(.*)";$/)
+            if (res) {
+                var [,property,value] = res
+                if (property && value && value != '---') {
+                    if (isNaN(value))
+                        properties[property] = value
+                    else
+                        properties[property] = Number(value)
+                }
+            }
+        });
+        return properties
+    }
+        
 	onInit() {
 		this.log('WeatherLink init');
 		this.log('Name:', this.getName());

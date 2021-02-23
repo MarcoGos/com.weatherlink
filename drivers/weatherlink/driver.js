@@ -52,24 +52,6 @@ class WeatherLinkDriver extends Homey.Driver {
     isCorrectWeatherLinkFile(lines) {
         return true
     }
-
-    convertRawTextToProperties(data) {
-        const lines = data.split(/\r?\n/);
-        const properties = {}
-        lines.forEach((line) => {
-            let res = line.match(/^\$([^ ]*) = " ?(.*)";$/)
-            if (res) {
-                var [,property,value] = res
-                if (property && value && value != '---') {
-                    if (isNaN(value))
-                        properties[property] = value
-                    else
-                        properties[property] = Number(value)
-                }
-            }
-        });
-        return properties
-    }
 }
 
 module.exports = WeatherLinkDriver;
