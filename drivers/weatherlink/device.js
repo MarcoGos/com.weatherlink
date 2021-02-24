@@ -6,19 +6,19 @@ const fetch = require('node-fetch');
 class WeatherLink extends Homey.Device {
 
     timerElapsed(device) {
-		device.timerID = setTimeout(function () { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
+        device.timerID = setTimeout(function () { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
 
         let measurements =
-			[
-				{ "capability": "measure_temperature", "field": "outsideTemp" },
+            [
+                { "capability": "measure_temperature", "field": "outsideTemp" },
                 { "capability": "measure_temperature.dewpoint", "field": "outsideDewPt"},
                 { "capability": "measure_temperature.windchill", "field": "windChill"},
                 { "capability": "measure_pressure", "field": "barometer" },
                 { "capability": "measure_humidity", "field": "outsideHumidity" },
-	            { "capability": "measure_rain", "field": "dailyRain" },
+                { "capability": "measure_rain", "field": "dailyRain" },
                 { "capability": "measure_wind_angle", "field": "windDir" },
                 { "capability": "measure_wind_strength", "field": "windSpeed" }
-    		]
+            ]
 
         fetch(device.getSetting('url')).then(function (response) {
             response.text().then(function (data) {
@@ -35,21 +35,21 @@ class WeatherLink extends Homey.Device {
     }
 
     _updateProperty(key, value) {
-		if (this.hasCapability(key)) {
-			let oldValue = this.getCapabilityValue(key);
-			if (oldValue !== null && oldValue != value) {
-				this.setCapabilityValue(key, value);
+        if (this.hasCapability(key)) {
+            let oldValue = this.getCapabilityValue(key);
+            if (oldValue !== null && oldValue != value) {
+                this.setCapabilityValue(key, value);
 
                 if (key === 'measure_temperature.dewpoint') {
                     let tokens = {
-						"measure_temperature.dewpoint": value || 'n/a'
-					}
+                        "measure_temperature.dewpoint": value || 'n/a'
+                    }
                     this.driver.triggerMeasureTemperatureDewpointChangedFlow(this, tokens);
                 }
                 if (key === 'measure_temperature.windchill') {
                     let tokens = {
-						"measure_temperature.windchill": value || 'n/a'
-					}
+                        "measure_temperature.windchill": value || 'n/a'
+                    }
                     this.driver.triggerMeasureTemperatureWindchillChangedFlow(this, tokens);
                 }
             } else {
@@ -76,12 +76,12 @@ class WeatherLink extends Homey.Device {
         return properties
     }
         
-	onInit() {
-		this.log('WeatherLink init');
-		this.log('Name:', this.getName());
-		this.log('Class:', this.getClass());
-		this.log('Url:', this.getSetting('url'));
-		this.log('Interval:', this.getSetting('interval'));
+    onInit() {
+        this.log('WeatherLink init');
+        this.log('Name:', this.getName());
+        this.log('Class:', this.getClass());
+        this.log('Url:', this.getSetting('url'));
+        this.log('Interval:', this.getSetting('interval'));
 
         if (!this.hasCapability('measure_pressure')) {
             this.addCapability('measure_pressure');
@@ -106,9 +106,9 @@ class WeatherLink extends Homey.Device {
             this.removeCapability('measure_gust_angle');
         }
 
-		var device = this;
-		device.timerID = setTimeout(function () { device.timerElapsed(device); }, 1000);
-	}
+        var device = this;
+        device.timerID = setTimeout(function () { device.timerElapsed(device); }, 1000);
+    }
 
     async onDeleted()
     {
