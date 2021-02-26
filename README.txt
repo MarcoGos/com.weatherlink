@@ -1,1 +1,2 @@
-With this app the data of your personal weather station based on WeaterLink can be connected to Homey. All the WeatherLink information is displayed on the Homey Insights.
+With this app the data of your personal weather station based on WeaterLink can be connected to Homey.
+Both old school via a url to a data file as via a link to the WeatherLink cloud. All the WeatherLink information is displayed on the Homey Insights.

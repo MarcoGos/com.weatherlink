@@ -1,39 +1,41 @@
 <script type="text/javascript">
     Homey.setTitle( __('pair.title_apiv1') );
-    $(function() {
-        $('#connect').click(function(){
+    $(() => {
+        $('#connect').click(() => {
             var deviceid = $('#deviceid').val();
             var pass = $('#pass').val();
             var apitoken = $('#apitoken').val();
             if( deviceid != '' && pass != '' && apitoken != '') {
                 const data = { "deviceid": deviceid, "pass": pass, "apitoken": apitoken }
-                Homey.emit('validate', data).then((result) => {
-                    var device_data = {
-                        id: deviceid
-                    };
-                    var settings = {
-                        deviceid: deviceid,
-                        pass: pass,
-                        apitoken: apitoken
-                    };
-                    Homey.createDevice({
-                        name  	 : deviceid,
-                        data 	 : device_data,
-                        settings : settings
-                    }, function(error, result) {
-                        if (error) {
+                Homey.emit('validate', data, (err, result) => {
+                    if (!err) {
+                        var device_data = {
+                            id: deviceid
+                        };
+                        var settings = {
+                            deviceid: deviceid,
+                            pass: pass,
+                            apitoken: apitoken
+                        };
+                        Homey.createDevice({
+                            name  	 : deviceid,
+                            data 	 : device_data,
+                            settings : settings
+                        }, (error, result) => {
+                            if (error) {
+                                $('.mi-device-test').hide();
+                                $('.mi-device-error').show();
+                                $('.mi-device-error-msg').html(error.message || error.toString());
+                                return Homey.alert( error );
+                            }
                             $('.mi-device-test').hide();
-                            $('.mi-device-error').show();
-                            $('.mi-device-error-msg').html(error.message || error.toString());
-                            return Homey.alert( error );
-                        }
-                        $('.mi-device-test').hide();
-                        $('.mi-device-ok').show();
-                        Homey.done();
-                    })
-                }).catch((err) => {
-                    Homey.alert(err);
-                    Homey.hideLoadingOverlay();
+                            $('.mi-device-ok').show();
+                            Homey.done();
+                        })
+                    } else {
+                        Homey.alert(err);
+                        Homey.hideLoadingOverlay();
+                    }
                 });
             } else {
                 $('.mi-device-test').hide();
@@ -96,7 +98,4 @@
             <button id="connect" class="button" data-i18n="pair.connect">Connect</button>
         </div>
     </div>
-    <!--div class="col2">
-        <div class="mi-device-info"></div>
-    </div//-->
 </div>

@@ -6,7 +6,7 @@ const fetch = require('node-fetch');
 class WeatherLink extends Homey.Device {
 
     timerElapsed(device) {
-        device.timerID = setTimeout(function () { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
+        device.timerID = setTimeout(() => { device.timerElapsed(device); }, device.getSetting('interval') * 1000);
 
         let measurements =
             [
@@ -20,16 +20,16 @@ class WeatherLink extends Homey.Device {
                 { "capability": "measure_wind_strength", "field": "windSpeed" }
             ]
 
-        fetch(device.getSetting('url')).then(function (response) {
-            response.text().then(function (data) {
+        fetch(device.getSetting('url')).then((response) => {
+            response.text().then((data) => {
                 const properties = device._convertRawTextToProperties(data);
                 measurements.forEach(measurement => {
-                    if (properties[measurement.field]) {
+                    if (measurement.field in properties) {
                         device._updateProperty(measurement.capability, properties[measurement.field]);
                     }
                 });
             });
-        }).catch(function (err) {
+        }).catch((err) => {
             console.log(err)
         });
     }
@@ -44,13 +44,13 @@ class WeatherLink extends Homey.Device {
                     let tokens = {
                         "measure_temperature.dewpoint": value || 'n/a'
                     }
-                    this.driver.triggerMeasureTemperatureDewpointChangedFlow(this, tokens);
+                    this.getDriver()._measureTemperatureDewpointChangedTrigger.trigger(this, tokens);
                 }
                 if (key === 'measure_temperature.windchill') {
                     let tokens = {
                         "measure_temperature.windchill": value || 'n/a'
                     }
-                    this.driver.triggerMeasureTemperatureWindchillChangedFlow(this, tokens);
+                    this.getDriver()._measureTemperatureWindchillChangedTrigger.trigger(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);
@@ -107,7 +107,7 @@ class WeatherLink extends Homey.Device {
         }
 
         var device = this;
-        device.timerID = setTimeout(function () { device.timerElapsed(device); }, 1000);
+        device.timerID = setTimeout(() => { device.timerElapsed(device); }, 1000);
     }
 
     async onDeleted()

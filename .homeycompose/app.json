@@ -1,8 +1,8 @@
 {
   "id": "com.weatherlink",
   "version": "1.0.0",
-  "compatibility": ">=5.0.0",
-  "sdk": 3,
+  "compatibility": ">=3.0.0",
+  "sdk": 2,
   "brandColor": "#0BAB8B",
   "name": {
     "en": "WeatherLink"
@@ -20,6 +20,11 @@
   },
   "author": {
     "name": "Marco Gosselink",
-    "email": "marco@famgosselink.nl"
-  }
+    "email": "-"
+  },
+  "source": "https://github.com/MarcoGos/com.weatherlink",
+  "bugs": {
+    "url": "https://github.com/MarcoGos/com.weatherlink/issues"
+  },
+  "homeyCommunityTopicId": 43708
 }

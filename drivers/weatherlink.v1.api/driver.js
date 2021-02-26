@@ -7,40 +7,29 @@ class WeatherLinkV1APIDriver extends Homey.Driver {
     async onInit() {
         super.onInit();
 
-        this._measureTemperatureDewpointChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.dewpoint.changed');
-        this._measureTemperatureWindchillChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.windchill.changed');
+        this._measureTemperatureDewpointChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.dewpoint.changed')
+            .register();
+        this._measureTemperatureWindchillChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.windchill.changed')
+            .register();
     }
 
-    triggerMeasureTemperatureDewpointChangedFlow(device, tokens) {
-        this._measureTemperatureDewpointChangedTrigger.trigger(device, tokens)
-            .catch(this.error);
-    }
-
-    triggerMeasureTemperatureWindchillChangedFlow(device, tokens) {
-        this._measureTemperatureWindchillChangedTrigger.trigger(device, tokens)
-            .catch(this.error);
-    }
-
-    async onPair(session) {
-        session.setHandler('validate', async function (data) {
-            var errorText = ''
+    async onPair(socket) {
+        socket.on('validate', (data, callback) => {
             const url = `https://api.weatherlink.com/v1/NoaaExt.json?user=${data.deviceid}&pass=${data.pass}&apiToken=${data.apitoken}`
-            await fetch(url)
-            .then((response) => {
-                console.log(response)
-                if (response.ok) {
-                    return response.json()
-                } else {
-                    errorText = response.errorText
-                }
-            })
-            .catch((err) => {
-                errorText = err
+            fetch(url).then((response) => {
+                response.json().then((json) => {
+                    if ('temp_c' in json) {
+                        callback(null, '');
+                    } else {
+                        callback(new Error('Incorrect file format'), null);
+                    }
+                }).catch((err) => {
+                    callback(new Error(err), null);
+                });
+            }).catch((err) => {
+                console.log(err);
+                callback(new Error(err), null)
             });
-
-            if (errorText != '') {
-                throw new Error(errorText)
-            }
         });
     }
 }

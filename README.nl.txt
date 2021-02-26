@@ -1,1 +1,2 @@
-Met deze app kan de data van jouw persoonlijke weerstation gebaseerd op WeaterLink gekoppeld worden met Homey. Alle WeatherLink information wordt getoond op Homey Insights.
+Met deze app kan de data van jouw persoonlijke weerstation gebaseerd op WeaterLink gekoppeld worden met Homey. 
+Zowel old school via een url naar een data bestand als ook via een koppeling via de WeatherLink cloud. Alle WeatherLink information wordt getoond op Homey Insights.
