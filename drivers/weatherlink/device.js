@@ -12,7 +12,7 @@ class WeatherLink extends Homey.Device {
             [
                 { "capability": "measure_temperature", "field": "outsideTemp" },
                 { "capability": "measure_temperature.dewpoint", "field": "outsideDewPt"},
-                { "capability": "measure_temperature.windchill", "field": "windChill"},
+                { "capability": "measure_temperature.feelslike", "field": "windChill"},
                 { "capability": "measure_pressure", "field": "barometer" },
                 { "capability": "measure_humidity", "field": "outsideHumidity" },
                 { "capability": "measure_rain", "field": "dailyRain" },
@@ -24,7 +24,15 @@ class WeatherLink extends Homey.Device {
             response.text().then((data) => {
                 const properties = device._convertRawTextToProperties(data);
                 measurements.forEach(measurement => {
-                    if (measurement.field in properties) {
+                    if (measurement.field == 'windChill') {
+                        if (properties.outsideTemp <= 16.1) {
+                            device._updateProperty(measurement.capability, properties.windChill);
+                        } else if (properties.outsideTemp >= 21) {
+                            device._updateProperty(measurement.capability, properties.outsideHeatIndex);
+                        } else {
+                            device._updateProperty(measurement.capability, properties.outsideTemp);
+                        }
+                    } else if (measurement.field in properties) {
                         device._updateProperty(measurement.capability, properties[measurement.field]);
                     }
                 });
@@ -46,11 +54,11 @@ class WeatherLink extends Homey.Device {
                     }
                     this.getDriver()._measureTemperatureDewpointChangedTrigger.trigger(this, tokens);
                 }
-                if (key === 'measure_temperature.windchill') {
+                if (key === 'measure_temperature.feelslike') {
                     let tokens = {
-                        "measure_temperature.windchill": value || 'n/a'
+                        "measure_temperature.feelslike": value || 'n/a'
                     }
-                    this.getDriver()._measureTemperatureWindchillChangedTrigger.trigger(this, tokens);
+                    this.getDriver()._measureTemperatureFeelsLikeChangedTrigger.trigger(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);
@@ -83,27 +91,11 @@ class WeatherLink extends Homey.Device {
         this.log('Url:', this.getSetting('url'));
         this.log('Interval:', this.getSetting('interval'));
 
-        if (!this.hasCapability('measure_pressure')) {
-            this.addCapability('measure_pressure');
+        if (this.hasCapability('measure_temperature.windchill')) {
+            this.removeCapability('measure_temperature.windchill');
         }
-
-        if (!this.hasCapability('measure_rain')) {
-            this.addCapability('measure_rain');
-        }
-        
-        if (!this.hasCapability('measure_temperature.dewpoint')) {
-            this.addCapability('measure_temperature.dewpoint');
-        }
-        if (!this.hasCapability('measure_temperature.windchill')) {
-            this.addCapability('measure_temperature.windchill');
-        }
-
-        if (this.hasCapability('measure_gust_strength')) {
-            this.removeCapability('measure_gust_strength');
-        }
-
-        if (this.hasCapability('measure_gust_angle')) {
-            this.removeCapability('measure_gust_angle');
+        if (!this.hasCapability('measure_temperature.feelslike')) {
+            this.addCapability('measure_temperature.feelslike');
         }
 
         var device = this;

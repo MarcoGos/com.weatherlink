@@ -9,7 +9,7 @@ class WeatherLinkV1APIDriver extends Homey.Driver {
 
         this._measureTemperatureDewpointChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.dewpoint.changed')
             .register();
-        this._measureTemperatureWindchillChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.windchill.changed')
+        this._measureTemperatureFeelsLikeChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.feelslike.changed')
             .register();
     }
 

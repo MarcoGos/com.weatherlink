@@ -7,7 +7,7 @@
   "capabilities": [
     "measure_temperature",
     "measure_temperature.dewpoint",
-    "measure_temperature.windchill",
+    "measure_temperature.feelslike",
     "measure_pressure",
     "measure_humidity",
     "measure_rain",
@@ -21,10 +21,10 @@
         "nl": "Dauwpunt"
       }
     },
-    "measure_temperature.windchill": {
+    "measure_temperature.feelslike": {
       "title": {
-        "en": "Windchill",
-        "nl": "Gevoelstemperatuur"
+        "en": "Feels like",
+        "nl": "Voelt als"
       }
     }
   },

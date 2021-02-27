@@ -12,19 +12,27 @@ class WeatherLinkV1API extends Homey.Device {
             [
                 { "capability": "measure_temperature", "field": "temp_c" },
                 { "capability": "measure_temperature.dewpoint", "field": "dewpoint_c"},
-                { "capability": "measure_temperature.windchill", "field": "windchill_c"},
+                { "capability": "measure_temperature.feelslike", "field": "windchill_c"},
                 { "capability": "measure_humidity", "field": "relative_humidity" },
                 { "capability": "measure_pressure", "field": "pressure_mb" },
                 { "capability": "measure_wind_angle", "field": "wind_degrees" },
                 { "capability": "measure_wind_strength", "factor": 1.61, "field": "wind_mph" },
-                { "capability": "measure_rain", "field": "rain_day_in", "group": "davis_current_observation" }
+                { "capability": "measure_rain", "factor": 25.4, "field": "rain_day_in", "group": "davis_current_observation" }
             ]
 
         fetch(device._getUrl(device)).then((response) => {
             response.json().then((json) => {
                 measurements.forEach(measurement => {
                     let data = (!measurement.group) ? json : json[measurement.group];
-                    if (measurement.field in data) {
+                    if (measurement.field == "windchill_c") {
+                        if (Number(data.temp_c) <= 16.1) {
+                            device._updateProperty(measurement.capability, Number(data.windchill_c));
+                        } else if (Number(data.temp_c) >= 21) {
+                            device._updateProperty(measurement.capability, Number(data.heat_index_c));
+                        } else {
+                            device._updateProperty(measurement.capability, Number(data.temp_c));
+                        }
+                    } else if (measurement.field in data) {
                         device._updateProperty(measurement.capability, data[measurement.field] * (measurement.factor || 1));
                     }
                 });
@@ -53,11 +61,11 @@ class WeatherLinkV1API extends Homey.Device {
                     }
                     this.getDriver()._measureTemperatureDewpointChangedTrigger.trigger(this, tokens);
                 }
-                if (key === 'measure_temperature.windchill') {
+                if (key === 'measure_temperature.feelslike') {
                     let tokens = {
-                        "measure_temperature.windchill": value || 'n/a'
+                        "measure_temperature.feelslike": value || 'n/a'
                     }
-                    this.getDriver()._measureTemperatureWindchillChangedTrigger.trigger(this, tokens);
+                    this.getDriver()._measureTemperatureFeelsLikeChangedTrigger.trigger(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);
@@ -71,11 +79,11 @@ class WeatherLinkV1API extends Homey.Device {
         this.log('Class:', this.getClass());
         this.log('Interval:', this.getSetting('interval'));
 
-        if (!this.hasCapability('measure_temperature.dewpoint')) {
-            this.addCapability('measure_temperature.dewpoint');
+        if (this.hasCapability('measure_temperature.windchill')) {
+            this.removeCapability('measure_temperature.windchill');
         }
-        if (!this.hasCapability('measure_temperature.windchill')) {
-            this.addCapability('measure_temperature.windchill');
+        if (!this.hasCapability('measure_temperature.feelslike')) {
+            this.addCapability('measure_temperature.feelslike');
         }
 
         var device = this;
@@ -87,6 +95,7 @@ class WeatherLinkV1API extends Homey.Device {
         if (this.timerID) {
             clearTimeout(this.timerID);
         }
+        console.log(`Deleted device ${this.getName()}`)
     }
 }
 
