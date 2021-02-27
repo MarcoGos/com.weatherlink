@@ -1,7 +1,7 @@
 {
   "_comment": "This file is generated. Please edit .homeycompose/app.json instead.",
   "id": "com.weatherlink",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "compatibility": ">=3.0.0",
   "sdk": 2,
   "brandColor": "#0BAB8B",
@@ -55,10 +55,10 @@
         ]
       },
       {
-        "id": "measure_temperature.windchill.changed",
+        "id": "measure_temperature.feelslike.changed",
         "title": {
-          "en": "Windchill changed",
-          "nl": "Gevoelstemperatuur is veranderd"
+          "en": "Feels like changed",
+          "nl": "Voelt als is veranderd"
         },
         "args": [
           {
@@ -69,11 +69,59 @@
         ],
         "tokens": [
           {
-            "name": "measure_temperature.windchill",
+            "name": "measure_temperature.feelslike",
             "type": "number",
             "title": {
-              "en": "Windchill",
-              "nl": "Gevoelstemperatuur"
+              "en": "Feels like",
+              "nl": "Voelt als"
+            }
+          }
+        ]
+      },
+      {
+        "id": "measure_temperature.dewpoint.changed",
+        "title": {
+          "en": "Dewpoint changed",
+          "nl": "Dauwpunt is veranderd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=weatherlink.v1.api"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "measure_temperature.dewpoint",
+            "type": "number",
+            "title": {
+              "en": "Dewpoint",
+              "nl": "Dauwpunt"
+            }
+          }
+        ]
+      },
+      {
+        "id": "measure_temperature.feelslike.changed",
+        "title": {
+          "en": "Feels like changed",
+          "nl": "Voelt als is veranderd"
+        },
+        "args": [
+          {
+            "type": "device",
+            "name": "device",
+            "filter": "driver_id=weatherlink.v1.api"
+          }
+        ],
+        "tokens": [
+          {
+            "name": "measure_temperature.feelslike",
+            "type": "number",
+            "title": {
+              "en": "Feels like",
+              "nl": "Voelt als"
             }
           }
         ]
@@ -90,7 +138,7 @@
       "capabilities": [
         "measure_temperature",
         "measure_temperature.dewpoint",
-        "measure_temperature.windchill",
+        "measure_temperature.feelslike",
         "measure_pressure",
         "measure_humidity",
         "measure_rain",
@@ -104,10 +152,10 @@
             "nl": "Dauwpunt"
           }
         },
-        "measure_temperature.windchill": {
+        "measure_temperature.feelslike": {
           "title": {
-            "en": "Windchill",
-            "nl": "Gevoelstemperatuur"
+            "en": "Feels like",
+            "nl": "Voelt als"
           }
         }
       },
@@ -168,7 +216,7 @@
       "capabilities": [
         "measure_temperature",
         "measure_temperature.dewpoint",
-        "measure_temperature.windchill",
+        "measure_temperature.feelslike",
         "measure_pressure",
         "measure_humidity",
         "measure_rain",
@@ -182,10 +230,10 @@
             "nl": "Dauwpunt"
           }
         },
-        "measure_temperature.windchill": {
+        "measure_temperature.feelslike": {
           "title": {
-            "en": "Windchill",
-            "nl": "Gevoelstemperatuur"
+            "en": "Feels like",
+            "nl": "Voelt als"
           }
         }
       },
