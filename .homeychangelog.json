@@ -6,6 +6,9 @@
     "en": "Downgraded to sdk2 and small improvements"
   },
   "1.0.2": {
-    "en": "Removed windchill and added Feels like-temperature as a combinated of windchill and heatindex. Fixed rain amount bug."
+    "en": "Removed windchill and added Feels like-temperature as a combination of windchill and heatindex. Fixed rain amount bug."
+  },
+  "1.0.3": {
+    "en": "Added rainrate, windgust and rearranged capabilities"
   }
 }
