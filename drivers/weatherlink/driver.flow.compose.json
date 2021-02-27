@@ -35,6 +35,24 @@
             }
           }
         ]
+      },
+      {
+        "id": "measure_rain.rate.changed",
+        "title": {
+          "en": "Rain rate changed",
+          "nl": "Regenintensiteit is veranderd"
+        },
+        "args": [],
+        "tokens": [
+          {
+            "name": "measure_rain.rate",
+            "type": "number",
+            "title": {
+              "en": "Rain rate",
+              "nl": "Regenintensiteit"
+            }
+          }
+        ]
       }
     ]
 }

@@ -6,13 +6,15 @@
   "class": "sensor",
   "capabilities": [
     "measure_temperature",
-    "measure_temperature.dewpoint",
     "measure_temperature.feelslike",
-    "measure_pressure",
+    "measure_temperature.dewpoint",
     "measure_humidity",
-    "measure_rain",
+    "measure_pressure",
     "measure_wind_angle",
-    "measure_wind_strength"
+    "measure_wind_strength",
+    "measure_gust_strength",
+    "measure_rain.rate",
+    "measure_rain"
   ],
   "capabilitiesOptions": {
     "measure_temperature.dewpoint": {
@@ -25,6 +27,16 @@
       "title": {
         "en": "Feels like",
         "nl": "Voelt als"
+      }
+    },
+    "measure_rain.rate": {
+      "title": {
+        "en": "Rain rate",
+        "nl": "Regenintensiteit"
+      },
+      "units": {
+        "en": "mm/hr",
+        "nl": "mm/h"
       }
     }
   },

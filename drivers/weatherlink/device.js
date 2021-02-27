@@ -11,13 +11,15 @@ class WeatherLink extends Homey.Device {
         let measurements =
             [
                 { "capability": "measure_temperature", "field": "outsideTemp" },
-                { "capability": "measure_temperature.dewpoint", "field": "outsideDewPt"},
                 { "capability": "measure_temperature.feelslike", "field": "windChill"},
-                { "capability": "measure_pressure", "field": "barometer" },
+                { "capability": "measure_temperature.dewpoint", "field": "outsideDewPt"},
                 { "capability": "measure_humidity", "field": "outsideHumidity" },
-                { "capability": "measure_rain", "field": "dailyRain" },
+                { "capability": "measure_pressure", "field": "barometer" },
                 { "capability": "measure_wind_angle", "field": "windDir" },
-                { "capability": "measure_wind_strength", "field": "windSpeed" }
+                { "capability": "measure_wind_strength", "field": "windSpeed" },
+                { "capability": "measure_gust_strength", "field": "hiWindSpeed" },
+                { "capability": "measure_rain.rate", "field": "rainRate" },
+                { "capability": "measure_rain", "field": "dailyRain" }
             ]
 
         fetch(device.getSetting('url')).then((response) => {
@@ -59,6 +61,12 @@ class WeatherLink extends Homey.Device {
                         "measure_temperature.feelslike": value || 'n/a'
                     }
                     this.getDriver()._measureTemperatureFeelsLikeChangedTrigger.trigger(this, tokens);
+                }
+                if (key === 'measure_rain.rate') {
+                    let tokens = {
+                        "measure_rain.rate": value || 'n/a'
+                    }
+                    this.getDriver()._measureRainRateChangedTrigger.trigger(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);

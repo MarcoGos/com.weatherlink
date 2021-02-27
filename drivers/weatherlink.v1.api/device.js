@@ -11,12 +11,14 @@ class WeatherLinkV1API extends Homey.Device {
         let measurements =
             [
                 { "capability": "measure_temperature", "field": "temp_c" },
-                { "capability": "measure_temperature.dewpoint", "field": "dewpoint_c"},
                 { "capability": "measure_temperature.feelslike", "field": "windchill_c"},
+                { "capability": "measure_temperature.dewpoint", "field": "dewpoint_c"},
                 { "capability": "measure_humidity", "field": "relative_humidity" },
                 { "capability": "measure_pressure", "field": "pressure_mb" },
                 { "capability": "measure_wind_angle", "field": "wind_degrees" },
                 { "capability": "measure_wind_strength", "factor": 1.61, "field": "wind_mph" },
+                { "capability": "measure_gust_strength", "factor": 1.61, "field": "wind_ten_min_gust_mph", "group": "davis_current_observation" },
+                { "capability": "measure_rain.rate", "factor": 25.4, "field": "rain_rate_in_per_hr", "group": "davis_current_observation" },
                 { "capability": "measure_rain", "factor": 25.4, "field": "rain_day_in", "group": "davis_current_observation" }
             ]
 
@@ -66,6 +68,12 @@ class WeatherLinkV1API extends Homey.Device {
                         "measure_temperature.feelslike": value || 'n/a'
                     }
                     this.getDriver()._measureTemperatureFeelsLikeChangedTrigger.trigger(this, tokens);
+                }
+                if (key === 'measure_rain.rate') {
+                    let tokens = {
+                        "measure_rain.rate": value || 'n/a'
+                    }
+                    this.getDriver()._measureRainRateChangedTrigger.trigger(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);

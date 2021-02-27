@@ -11,6 +11,8 @@ class WeatherLinkV1APIDriver extends Homey.Driver {
             .register();
         this._measureTemperatureFeelsLikeChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.feelslike.changed')
             .register();
+        this._measureRainRateChangedTrigger = new Homey.FlowCardTriggerDevice('measure_rain.rate.changed')
+            .register();
     }
 
     async onPair(socket) {
