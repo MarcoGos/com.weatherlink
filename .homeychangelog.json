@@ -10,5 +10,8 @@
   },
   "1.0.3": {
     "en": "Added rainrate, windgust and rearranged capabilities"
+  },
+  "1.0.4": {
+    "en": "Altered the way Feels like-temperature is calculated"
   }
 }
