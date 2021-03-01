@@ -10,7 +10,7 @@ data file (old school). The second driver connects to the WeatherLink.com cloud 
 This app contains two device drivers.
 
 ## weatherlink
-Driver Weatherlink is for data retrieval via a url pointing to a WeatherLink data file. The file format is plain text with on every line a single variable and it's value. The file start with the line "BOF" and ends with "EOF". The line format is '$<var> = "<value>";'. For example '$outsideTemp = "12.8";' is the variable for the outside temperature.
+Driver Weatherlink is for data retrieval via a url pointing to a WeatherLink data file. The file format is plain text with on every line a single variable and it's value. The file start with the line "BOF" and ends with "EOF". The line format is '$\<var> = "\<value>";'. For example '$outsideTemp = "12.8";' is the variable for the outside temperature.
 
 ## weatherlink.v1.api
 Driver Weatherlink.v1.api is for data retrieval via the Weaterlink.com cloud. You need to provide a Device ID (DID), Password (account owner) and API Token (see below).

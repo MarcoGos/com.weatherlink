@@ -16,8 +16,8 @@ class WeatherLink extends Homey.Device {
                 { "capability": "measure_humidity", "field": "outsideHumidity" },
                 { "capability": "measure_pressure", "field": "barometer" },
                 { "capability": "measure_wind_angle", "field": "windDir" },
-                { "capability": "measure_wind_strength", "field": "windSpeed" },
-                { "capability": "measure_gust_strength", "field": "hiWindSpeed" },
+                { "capability": "measure_wind_strength", "field": "wind10Avg" },
+                { "capability": "measure_gust_strength", "field": "windSpeed" },
                 { "capability": "measure_rain.rate", "field": "rainRate" },
                 { "capability": "measure_rain", "field": "dailyRain" }
             ]
@@ -26,14 +26,16 @@ class WeatherLink extends Homey.Device {
             response.text().then((data) => {
                 const properties = device._convertRawTextToProperties(data);
                 measurements.forEach(measurement => {
-                    if (measurement.field == 'windChill') {
-                        if (properties.outsideTemp <= 16.1) {
-                            device._updateProperty(measurement.capability, properties.windChill);
-                        } else if (properties.outsideTemp >= 21) {
-                            device._updateProperty(measurement.capability, properties.outsideHeatIndex);
-                        } else {
-                            device._updateProperty(measurement.capability, properties.outsideTemp);
-                        }
+                    if (measurement.capability == 'measure_temperature.feelslike') {
+                        // if (properties.outsideTemp <= 16.1) {
+                        //     device._updateProperty(measurement.capability, properties.windChill);
+                        // } else if (properties.outsideTemp >= 21) {
+                        //     device._updateProperty(measurement.capability, properties.outsideHeatIndex);
+                        // } else {
+                        //     device._updateProperty(measurement.capability, properties.outsideTemp);
+                        // }
+                        let thw = device._calculateTHWIndex(properties.outsideTemp, properties.outsideHumidity, properties.windSpeed / 3.6);
+                        device._updateProperty(measurement.capability, thw);
                     } else if (measurement.field in properties) {
                         device._updateProperty(measurement.capability, properties[measurement.field]);
                     }
@@ -91,6 +93,12 @@ class WeatherLink extends Homey.Device {
         });
         return properties
     }
+
+    _calculateTHWIndex(temperature, humidity, windspeed_ms) {
+        let e = (humidity / 100) * 6.105 * Math.exp(17.27 * temperature / (237.7 + temperature));
+        let thw = temperature + 0.33 * e - 0.70 * windspeed_ms - 4.00;
+        return Math.round(thw * 10) / 10;
+    }
         
     onInit() {
         this.log('WeatherLink init');
@@ -104,6 +112,15 @@ class WeatherLink extends Homey.Device {
         }
         if (!this.hasCapability('measure_temperature.feelslike')) {
             this.addCapability('measure_temperature.feelslike');
+        }
+        if (!this.hasCapability('measure_rain.rate')) {
+            this.addCapability('measure_rain.rate');
+        }
+        if (!this.hasCapability('measure_rain')) {
+            this.addCapability('measure_rain');
+        }
+        if (!this.hasCapability('measure_wind_strength')) {
+            this.addCapability('measure_wind_strength');
         }
 
         var device = this;

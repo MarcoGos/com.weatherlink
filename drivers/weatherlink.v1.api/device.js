@@ -26,14 +26,16 @@ class WeatherLinkV1API extends Homey.Device {
             response.json().then((json) => {
                 measurements.forEach(measurement => {
                     let data = (!measurement.group) ? json : json[measurement.group];
-                    if (measurement.field == "windchill_c") {
-                        if (Number(data.temp_c) <= 16.1) {
-                            device._updateProperty(measurement.capability, Number(data.windchill_c));
-                        } else if (Number(data.temp_c) >= 21) {
-                            device._updateProperty(measurement.capability, Number(data.heat_index_c));
-                        } else {
-                            device._updateProperty(measurement.capability, Number(data.temp_c));
-                        }
+                    if (measurement.capability == "measure_temperature.feelslike") {
+                        // if (Number(data.temp_c) <= 16.1) {
+                        //     device._updateProperty(measurement.capability, Number(data.windchill_c));
+                        // } else if (Number(data.temp_c) >= 21) {
+                        //     device._updateProperty(measurement.capability, Number(data.heat_index_c));
+                        // } else {
+                        //     device._updateProperty(measurement.capability, Number(data.temp_c));
+                        // }
+                        let thw = device._calculateTHWIndex(data.temp_c, data.relative_humidity, data.wind_mph * 1.61 / 3.6);
+                        device._updateProperty(measurement.capability, thw);
                     } else if (measurement.field in data) {
                         device._updateProperty(measurement.capability, data[measurement.field] * (measurement.factor || 1));
                     }
@@ -80,6 +82,12 @@ class WeatherLinkV1API extends Homey.Device {
             }
         }
     }
+
+    _calculateTHWIndex(temperature, humidity, windspeed_ms) {
+        let e = (humidity / 100) * 6.105 * Math.exp(17.27 * temperature / (237.7 + temperature));
+        let thw = temperature + 0.33 * e - 0.70 * windspeed_ms - 4.00;
+        return Math.round(thw * 10) / 10;
+    }
     
     onInit() {
         this.log('WeatherLink v1 API init');
@@ -92,6 +100,15 @@ class WeatherLinkV1API extends Homey.Device {
         }
         if (!this.hasCapability('measure_temperature.feelslike')) {
             this.addCapability('measure_temperature.feelslike');
+        }
+        if (!this.hasCapability('measure_rain.rate')) {
+            this.addCapability('measure_rain.rate');
+        }
+        if (!this.hasCapability('measure_rain')) {
+            this.addCapability('measure_rain');
+        }
+        if (!this.hasCapability('measure_wind_strength')) {
+            this.addCapability('measure_wind_strength');
         }
 
         var device = this;
