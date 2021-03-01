@@ -13,5 +13,8 @@
   },
   "1.0.4": {
     "en": "Altered the way Feels like-temperature is calculated"
+  },
+  "1.0.5": {
+    "en": "small fix on Feels like in v1 driver"
   }
 }
