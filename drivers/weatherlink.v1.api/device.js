@@ -34,7 +34,7 @@ class WeatherLinkV1API extends Homey.Device {
                         // } else {
                         //     device._updateProperty(measurement.capability, Number(data.temp_c));
                         // }
-                        let thw = device._calculateTHWIndex(data.temp_c, data.relative_humidity, data.wind_mph * 1.61 / 3.6);
+                        let thw = device._calculateTHWIndex(Number(data.temp_c), Number(data.relative_humidity), Number(data.wind_mph) * 1.61 / 3.6);
                         device._updateProperty(measurement.capability, thw);
                     } else if (measurement.field in data) {
                         device._updateProperty(measurement.capability, data[measurement.field] * (measurement.factor || 1));
