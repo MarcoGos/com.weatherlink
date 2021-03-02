@@ -16,5 +16,8 @@
   },
   "1.0.5": {
     "en": "small fix on Feels like in v1 driver"
+  },
+  "1.0.6": {
+    "en": "Feels like-temp based on windchill and heatindex"
   }
 }
