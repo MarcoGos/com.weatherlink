@@ -27,15 +27,13 @@ class WeatherLinkV1API extends Homey.Device {
                 measurements.forEach(measurement => {
                     let data = (!measurement.group) ? json : json[measurement.group];
                     if (measurement.capability == "measure_temperature.feelslike") {
-                        // if (Number(data.temp_c) <= 16.1) {
-                        //     device._updateProperty(measurement.capability, Number(data.windchill_c));
-                        // } else if (Number(data.temp_c) >= 21) {
-                        //     device._updateProperty(measurement.capability, Number(data.heat_index_c));
-                        // } else {
-                        //     device._updateProperty(measurement.capability, Number(data.temp_c));
-                        // }
-                        let thw = device._calculateTHWIndex(Number(data.temp_c), Number(data.relative_humidity), Number(data.wind_mph) * 1.61 / 3.6);
-                        device._updateProperty(measurement.capability, thw);
+                        if (Number(data.temp_c) <= 16.1) {
+                            device._updateProperty(measurement.capability, Number(data.windchill_c));
+                        } else if (Number(data.temp_c) >= 21) {
+                            device._updateProperty(measurement.capability, Number(data.heat_index_c));
+                        } else {
+                            device._updateProperty(measurement.capability, Number(data.temp_c));
+                        }
                     } else if (measurement.field in data) {
                         device._updateProperty(measurement.capability, data[measurement.field] * (measurement.factor || 1));
                     }
@@ -81,12 +79,6 @@ class WeatherLinkV1API extends Homey.Device {
                 this.setCapabilityValue(key, value);
             }
         }
-    }
-
-    _calculateTHWIndex(temperature, humidity, windspeed_ms) {
-        let e = (humidity / 100) * 6.105 * Math.exp(17.27 * temperature / (237.7 + temperature));
-        let thw = temperature + 0.33 * e - 0.70 * windspeed_ms - 4.00;
-        return Math.round(thw * 10) / 10;
     }
     
     onInit() {

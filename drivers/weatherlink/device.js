@@ -27,15 +27,13 @@ class WeatherLink extends Homey.Device {
                 const properties = device._convertRawTextToProperties(data);
                 measurements.forEach(measurement => {
                     if (measurement.capability == 'measure_temperature.feelslike') {
-                        // if (properties.outsideTemp <= 16.1) {
-                        //     device._updateProperty(measurement.capability, properties.windChill);
-                        // } else if (properties.outsideTemp >= 21) {
-                        //     device._updateProperty(measurement.capability, properties.outsideHeatIndex);
-                        // } else {
-                        //     device._updateProperty(measurement.capability, properties.outsideTemp);
-                        // }
-                        let thw = device._calculateTHWIndex(properties.outsideTemp, properties.outsideHumidity, properties.windSpeed / 3.6);
-                        device._updateProperty(measurement.capability, thw);
+                        if (properties.outsideTemp <= 16.1) {
+                            device._updateProperty(measurement.capability, properties.windChill);
+                        } else if (properties.outsideTemp >= 21) {
+                            device._updateProperty(measurement.capability, properties.outsideHeatIndex);
+                        } else {
+                            device._updateProperty(measurement.capability, properties.outsideTemp);
+                        }
                     } else if (measurement.field in properties) {
                         device._updateProperty(measurement.capability, properties[measurement.field]);
                     }
@@ -92,12 +90,6 @@ class WeatherLink extends Homey.Device {
             }
         });
         return properties
-    }
-
-    _calculateTHWIndex(temperature, humidity, windspeed_ms) {
-        let e = (humidity / 100) * 6.105 * Math.exp(17.27 * temperature / (237.7 + temperature));
-        let thw = temperature + 0.33 * e - 0.70 * windspeed_ms - 4.00;
-        return Math.round(thw * 10) / 10;
     }
         
     onInit() {
