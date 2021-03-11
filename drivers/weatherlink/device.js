@@ -54,19 +54,19 @@ class WeatherLink extends Homey.Device {
                     let tokens = {
                         "measure_temperature.dewpoint": value || 'n/a'
                     }
-                    this.getDriver()._measureTemperatureDewpointChangedTrigger.trigger(this, tokens);
+                    this.driver.triggerMeasureTemperatureDewpointChangedFlow(this, tokens);
                 }
                 if (key === 'measure_temperature.feelslike') {
                     let tokens = {
                         "measure_temperature.feelslike": value || 'n/a'
                     }
-                    this.getDriver()._measureTemperatureFeelsLikeChangedTrigger.trigger(this, tokens);
+                    this.driver.triggerMeasureTemperatureFeelsLikeChangedFlow(this, tokens);
                 }
                 if (key === 'measure_rain.rate') {
                     let tokens = {
                         "measure_rain.rate": value || 'n/a'
                     }
-                    this.getDriver()._measureRainRateChangedTrigger.trigger(this, tokens);
+                    this.driver.triggerMeasureRainRateChangedFlow(this, tokens);
                 }
             } else {
                 this.setCapabilityValue(key, value);

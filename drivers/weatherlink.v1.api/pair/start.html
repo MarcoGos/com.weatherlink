@@ -7,36 +7,34 @@
             var apitoken = $('#apitoken').val();
             if( deviceid != '' && pass != '' && apitoken != '') {
                 const data = { "deviceid": deviceid, "pass": pass, "apitoken": apitoken }
-                Homey.emit('validate', data, (err, result) => {
-                    if (!err) {
-                        var device_data = {
-                            id: deviceid
-                        };
-                        var settings = {
-                            deviceid: deviceid,
-                            pass: pass,
-                            apitoken: apitoken
-                        };
-                        Homey.createDevice({
-                            name  	 : deviceid,
-                            data 	 : device_data,
-                            settings : settings
-                        }, (error, result) => {
-                            if (error) {
-                                $('.mi-device-test').hide();
-                                $('.mi-device-error').show();
-                                $('.mi-device-error-msg').html(error.message || error.toString());
-                                return Homey.alert( error );
-                            }
-                            $('.mi-device-test').hide();
-                            $('.mi-device-ok').show();
-                            Homey.done();
-                        })
-                    } else {
-                        Homey.alert(err);
-                        Homey.hideLoadingOverlay();
+                Homey.emit('validate', data).then((result) => {
+                    var device_data = {
+                        id: deviceid
                     }
-                });
+                    var settings = {
+                        deviceid: deviceid,
+                        pass: pass,
+                        apitoken: apitoken
+                    }
+                    Homey.createDevice({
+                        name  	 : deviceid,
+                        data 	 : device_data,
+                        settings : settings
+                    }, (error, result) => {
+                        if (error) {
+                            $('.mi-device-test').hide();
+                            $('.mi-device-error').show();
+                            $('.mi-device-error-msg').html(error.message || error.toString());
+                            return Homey.alert( error );
+                        }
+                        $('.mi-device-test').hide();
+                        $('.mi-device-ok').show();
+                        Homey.done();
+                    })
+                }).catch((error) => {
+                    Homey.alert(error);
+                    Homey.hideLoadingOverlay();
+                })
             } else {
                 $('.mi-device-test').hide();
                 $('.mi-device-error').show();

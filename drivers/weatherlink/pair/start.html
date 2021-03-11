@@ -6,34 +6,32 @@
             var deviceName = $('#GivenName').val();
             if( inputurl != '' && deviceName != '') {
                 Homey.showLoadingOverlay();
-                Homey.emit('validate', { "url": inputurl }, (err, result) => {
-                    if (err == null) {
-                        var device_data = {
-                            id: deviceName
-                        };
-                        var settings = {
-                            url: inputurl
-                        };
-                        Homey.createDevice({
-                            name  	 : deviceName,
-                            data 	 : device_data,
-                            settings : settings
-                        }, (error, result) => {
-                            if (error) {
-                                $('.mi-device-test').hide();
-                                $('.mi-device-error').show();
-                                $('.mi-device-error-msg').html(error.message || error.toString());
-                                return Homey.alert( error );
-                            }
+                Homey.emit('validate', { "url": inputurl }).then((result) => {
+                    var device_data = {
+                        id: deviceName
+                    };
+                    var settings = {
+                        url: inputurl
+                    };
+                    Homey.createDevice({
+                        name  	 : deviceName,
+                        data 	 : device_data,
+                        settings : settings
+                    }, (error, result) => {
+                        if (error) {
                             $('.mi-device-test').hide();
-                            $('.mi-device-ok').show();
-                            Homey.done();
-                        })
-                    } else {
-                        Homey.alert(err);
-                        Homey.hideLoadingOverlay();
-                    }
-                });
+                            $('.mi-device-error').show();
+                            $('.mi-device-error-msg').html(error.message || error.toString());
+                            return Homey.alert( error );
+                        }
+                        $('.mi-device-test').hide();
+                        $('.mi-device-ok').show();
+                        Homey.done();
+                    })
+                }).catch((error) => {
+                    Homey.alert(error);
+                    Homey.hideLoadingOverlay();
+                })
             } else {
                 $('.mi-device-test').hide();
                 $('.mi-device-error').show();

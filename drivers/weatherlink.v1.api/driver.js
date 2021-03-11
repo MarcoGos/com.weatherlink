@@ -7,32 +7,44 @@ class WeatherLinkV1APIDriver extends Homey.Driver {
     async onInit() {
         super.onInit();
 
-        this._measureTemperatureDewpointChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.dewpoint.changed')
-            .register();
-        this._measureTemperatureFeelsLikeChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.feelslike.changed')
-            .register();
-        this._measureRainRateChangedTrigger = new Homey.FlowCardTriggerDevice('measure_rain.rate.changed')
-            .register();
+        this._measureTemperatureDewpointChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.dewpoint.changed')
+        this._measureTemperatureFeelsLikeChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.feelslike.changed')
+        this._measureRainRateChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_rain.rate.changed')
     }
 
-    async onPair(socket) {
-        socket.on('validate', (data, callback) => {
+    triggerMeasureTemperatureDewpointChangedFlow(device, tokens) {
+        this._measureTemperatureDewpointChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+    triggerMeasureTemperatureFeelsLikeChangedFlow(device, tokens) {
+        this._measureTemperatureFeelsLikeChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+    triggerMeasureRainRateChangedFlow(device, tokens) {
+        this._measureRainRateChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+    async onPair(session) {
+        session.setHandler('validate', async (data) => {
+            var errorText = ''
             const url = `https://api.weatherlink.com/v1/NoaaExt.json?user=${data.deviceid}&pass=${data.pass}&apiToken=${data.apitoken}`
-            fetch(url).then((response) => {
-                response.json().then((json) => {
-                    if ('temp_c' in json) {
-                        callback(null, '');
-                    } else {
-                        callback(new Error('Incorrect file format'), null);
-                    }
-                }).catch((err) => {
-                    callback(new Error(err), null);
-                });
-            }).catch((err) => {
-                console.log(err);
-                callback(new Error(err), null)
-            });
-        });
+            try {
+                const response = await fetch(url)
+                if (!response.ok) {
+                    throw new Error('Incorrect URL')
+                }
+                const json = await response.json();
+                console.log(json)
+                if (!('temp_c' in json)) {
+                    throw new Error('Incorrect file format')
+                }
+            } catch(error) {
+                throw new Error(error.message)
+            }
+    });
     }
 }
 

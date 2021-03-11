@@ -7,27 +7,43 @@ class WeatherLinkDriver extends Homey.Driver {
     async onInit() {
         super.onInit();
 
-        this._measureTemperatureDewpointChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.dewpoint.changed')
-            .register();
-        this._measureTemperatureFeelsLikeChangedTrigger = new Homey.FlowCardTriggerDevice('measure_temperature.feelslike.changed')
-            .register();
-        this._measureRainRateChangedTrigger = new Homey.FlowCardTriggerDevice('measure_rain.rate.changed')
-            .register();
+        this._measureTemperatureDewpointChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.dewpoint.changed')
+        this._measureTemperatureFeelsLikeChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_temperature.feelslike.changed')
+        this._measureRainRateChangedTrigger = this.homey.flow.getDeviceTriggerCard('measure_rain.rate.changed')
     }
 
-    async onPair(socket) {
-        socket.on('validate', (data, callback) => {
-            fetch(data.url).then((response) => {
-                response.text().then((responseText) => {
-                    const lines = responseText.split(/\r?\n/);
-                    if (lines.length == 0 || lines[0] != 'BOF') {
-                        callback(new Error('Incorrect file format'), null);
-                    }
-                    callback(null, '');
-                })
-            }).catch((err) => {
-                callback(new Error('Incorrect URL'), null)
-            });
+    triggerMeasureTemperatureDewpointChangedFlow(device, tokens) {
+        this._measureTemperatureDewpointChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+
+    triggerMeasureTemperatureFeelsLikeChangedFlow(device, tokens) {
+        this._measureTemperatureFeelsLikeChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+    triggerMeasureRainRateChangedFlow(device, tokens) {
+        this._measureRainRateChangedTrigger.trigger(device, tokens)
+            .catch(this.error);
+    }
+
+
+    async onPair(session) {
+        session.setHandler('validate', async (data) => {
+            try {
+                const response = await fetch(data.url)
+                if (!response.ok) {
+                    throw new Error('Incorrect URL')
+                }
+                const responseText = await response.text()
+                const lines = responseText.split(/\r?\n/);
+                if (lines.length == 0 || lines[0] != 'BOF') {
+                    throw new Error('Incorrect file format')
+                }
+            } catch(error) {
+                throw new Error(error.message)
+            }
         });
     }
 }
