@@ -19,5 +19,8 @@
   },
   "1.0.6": {
     "en": "Feels like-temp based on windchill and heatindex"
+  },
+  "1.1.0": {
+    "en": "Upgraded to sdk3"
   }
 }
