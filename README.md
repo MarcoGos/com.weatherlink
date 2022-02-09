@@ -1,4 +1,6 @@
 # WeatherLink
+THIS APP IS NO LONGER MAINTAINED.
+
 This app displays information from you personal weather station by either using a data file url of by
 using the WeatherLink cloud.
 
